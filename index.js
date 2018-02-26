@@ -45,10 +45,10 @@ app.use(async ctx => {
 });
 
 var gameId;
+var list = "";
 
 async function test(accountId) {
 			let recentMatches = await RiotAPI.get("euw1", "match.getRecentMatchlist", accountId);
-			var list = "";
 			
 			for(h = recentMatches.startIndex; h < recentMatches.endIndex; h++){
 				gameId = recentMatches.matches[h].gameId;
@@ -58,7 +58,8 @@ async function test(accountId) {
 						if (err) {
 							throw err;
 						} else {
-							if(result.length == 0) {
+							var rowAmount = result.length;
+							if(rowAmount = 0) {
 								let match = await RiotAPI.get("euw1", "match.getMatch", gameId);
 								var matchTS = new Date(match.gameCreation);
 								var today = new Date();
@@ -117,6 +118,7 @@ async function test(accountId) {
 								
 							} else {
 								list = list + gameId + " - Already Recorded -<br/>";
+								console.log("ALREADY RECORDED");
 							}
 						}
 					});
@@ -124,7 +126,6 @@ async function test(accountId) {
 					console.log(err);
 				}
 			}
-			
 			return list;
 }
 
